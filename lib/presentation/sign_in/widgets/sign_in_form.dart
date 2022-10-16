@@ -21,23 +21,8 @@ class SignInForm extends StatelessWidget {
             width: double.infinity,
             child: Stack(
               children: [
-                Positioned(
-                  right: 0,
-                  top: 0,
-                  child: SizedBox(
-                    height: size.height * .2,
-                    width: size.width * .2,
-                    child: BezierContainer(),
-                  ),
-                ),
-                Positioned(
-                  left: size.width * .1,
-                  top: size.width * .3,
-                  child: Text(
-                    'Sign In',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
-                  ),
-                ),
+                _PositionedBezierContainer(size: size),
+                _PositionedTitleText(size: size),
                 Padding(
                   padding: EdgeInsets.only(top: size.height * .4),
                   child: Center(
@@ -45,26 +30,60 @@ class SignInForm extends StatelessWidget {
                       padding: EdgeInsets.only(
                           left: size.width * .1, right: size.width * .1),
                       child: Form(
+                          onChanged: () => state.showMessages,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          CustomTextFormField(
-                            hinText: 'Email',
-                            prefixIcon: Icons.email,
-                            keyboardType: TextInputType.emailAddress,
-                            obscureText: false,
-                          ),
-                          SizedBox(
-                            height: size.height * .01,
-                          ),
-                          CustomTextFormField(
-                            hinText: 'Password',
-                            prefixIcon: Icons.password,
-                            keyboardType: TextInputType.visiblePassword,
-                            obscureText: true,
-                          ),
-                        ],
-                      )),
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CustomTextFormField(
+                                hinText: 'Email',
+                                prefixIcon: Icons.email,
+                                keyboardType: TextInputType.emailAddress,
+                                obscureText: false,
+                                onChanged: (value) {
+                                  context
+                                      .read<SignInBloc>()
+                                      .add(SignInEvent.emailChanged(value));
+                                },
+                                validator: (_) => context
+                                    .read<SignInBloc>()
+                                    .state
+                                    .emailAdress
+                                    .value
+                                    .fold(
+                                        (f) => f.maybeMap(
+                                            InvalidEmail: (_) =>
+                                                'Invalid Email',
+                                            orElse: () => null),
+                                        (_) => null),
+                              ),
+                              SizedBox(
+                                height: size.height * .01,
+                              ),
+                              CustomTextFormField(
+                                hinText: 'Password',
+                                prefixIcon: Icons.password,
+                                keyboardType: TextInputType.visiblePassword,
+                                obscureText: true,
+                                onChanged: (value) {
+                                  context
+                                      .read<SignInBloc>()
+                                      .add(SignInEvent.passwordChanged(value));
+                                },
+                                validator: (_) => context
+                                    .read<SignInBloc>()
+                                    .state
+                                    .password
+                                    .value
+                                   .fold(
+                                        (f) => f.maybeMap(
+                                            shortPassword: (_) =>
+                                                'Short Password',
+                                            orElse: () => null),
+                                        (_) => null),
+                              ),
+                            ],
+                          )),
                     ),
                   ),
                 ),
@@ -87,7 +106,9 @@ class SignInForm extends StatelessWidget {
                           ],
                         ),
                         CustomElevatedButton(
-                          func: () {},
+                          func: () {
+                            context.read<SignInBloc>().add(SignInEvent.signInWithEmailAndPassword());
+                          },
                           title: 'Sign In',
                         )
                       ],
@@ -100,12 +121,57 @@ class SignInForm extends StatelessWidget {
                   child: Container(
                     height: size.height * .1,
                     width: size.width * .3,
-                    child: LeftBezierContainer()),)
+                    child: LeftBezierContainer(),
+                  ),
+                )
               ],
             ),
           ),
         );
       },
+    );
+  }
+}
+
+class _PositionedTitleText extends StatelessWidget {
+  const _PositionedTitleText({
+    Key? key,
+    required this.size,
+  }) : super(key: key);
+
+  final Size size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      left: size.width * .1,
+      top: size.width * .3,
+      child: Text(
+        'Sign In',
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+      ),
+    );
+  }
+}
+
+class _PositionedBezierContainer extends StatelessWidget {
+  const _PositionedBezierContainer({
+    Key? key,
+    required this.size,
+  }) : super(key: key);
+
+  final Size size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      right: 0,
+      top: 0,
+      child: SizedBox(
+        height: size.height * .2,
+        width: size.width * .2,
+        child: BezierContainer(),
+      ),
     );
   }
 }

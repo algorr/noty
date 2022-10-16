@@ -7,12 +7,16 @@ class CustomTextFormField extends StatelessWidget {
     required this.prefixIcon,
     required this.keyboardType,
     required this.obscureText,
+    required this.onChanged,
+    required this.validator,
   }) : super(key: key);
 
   final String hinText;
   final IconData prefixIcon;
   final TextInputType keyboardType;
   final bool obscureText;
+  final Function onChanged;
+  final Function validator;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +27,13 @@ class CustomTextFormField extends StatelessWidget {
           prefixIcon: Icon(prefixIcon),
           hintText: hinText,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(20))),
+          onChanged: (value){
+            onChanged;
+          },
+          validator: (value) {
+            validator;
+            
+          },
     );
   }
 }

@@ -5,7 +5,6 @@ import 'package:injectable/injectable.dart';
 import 'package:noty/domain/auth/auth_failure.dart';
 import 'package:noty/domain/auth/i_auth_face.dart';
 import 'package:noty/domain/auth/value_object.dart';
-import 'package:noty/domain/core/failures.dart';
 
 part 'sign_in_event.dart';
 part 'sign_in_state.dart';
