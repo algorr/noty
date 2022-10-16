@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Noty',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -26,7 +26,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(child: Text('merhaba'),),
+      body: Center(child: Text('Hi!!'),),
     );
   }
 }
