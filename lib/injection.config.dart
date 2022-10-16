@@ -10,9 +10,9 @@ import 'package:get_it/get_it.dart' as _i1;
 import 'package:google_sign_in/google_sign_in.dart' as _i4;
 import 'package:injectable/injectable.dart' as _i2;
 
-import 'app/auth/sign_in/sign_in_bloc.dart' as _i5;
-import 'domain/auth/i_auth_face.dart' as _i6;
-import 'domain/service/firebase_auth.dart' as _i7;
+import 'app/auth/sign_in/sign_in_bloc.dart' as _i7;
+import 'domain/auth/i_auth_face.dart' as _i5;
+import 'domain/service/firebase_auth.dart' as _i6;
 import 'substracture/core/firebase_injectable_module.dart'
     as _i8; // ignore_for_file: unnecessary_lambdas
 
@@ -33,11 +33,11 @@ _i1.GetIt $initGetIt(
       () => firebaseInjectableModule.firebaseAuth);
   gh.lazySingleton<_i4.GoogleSignIn>(
       () => firebaseInjectableModule.googleSignIn);
-  gh.factory<_i5.SignInBloc>(() => _i5.SignInBloc(get<_i6.IAuthFace>()));
-  gh.lazySingleton<_i7.FirebaseAuthFace>(() => _i7.FirebaseAuthFace(
+  gh.lazySingleton<_i5.IAuthFace>(() => _i6.FirebaseAuthFace(
         get<_i3.FirebaseAuth>(),
         get<_i4.GoogleSignIn>(),
       ));
+  gh.factory<_i7.SignInBloc>(() => _i7.SignInBloc(get<_i5.IAuthFace>()));
   return get;
 }
 

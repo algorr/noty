@@ -7,7 +7,7 @@ import 'package:noty/domain/auth/auth_failure.dart';
 import 'package:noty/domain/auth/i_auth_face.dart';
 import 'package:noty/domain/auth/value_object.dart';
 
-@lazySingleton
+@LazySingleton(as: IAuthFace)
 class FirebaseAuthFace implements IAuthFace {
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
